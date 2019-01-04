@@ -3,9 +3,11 @@ A set of curl statements and shell script for Best Practice settings for the Cis
 
 Reference: https://unofficialaciguide.com/2018/11/29/aci-best-practice-configurations/
 
+Contents:
+- best practices for curling.txt: A collection of curl statements to support Best Practices Recommendation. 
+- bp-config.sh: a demo config script to configure recommended settings.
 
-This is simple shell script to demonstrate the use of curl to interact with the APIC API.
-Work-in-progress at the moment. 
+Work-in-progress. 
 
 
 
