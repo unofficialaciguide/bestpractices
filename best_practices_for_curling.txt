@@ -1,9 +1,14 @@
 
 # Login and GET Cookie
-curl -k -X POST http://10.18.188.101/api/mo/aaaLogin.xml -d "@DATAXML" -c cookie
+
+# Passing XML data directly 
+curl -s -k -X POST http://10.18.188.101/api/mo/aaaLogin.xml -d "<aaaUser name=admin pwd=password1/>" -c COOKIE
+
+# Passing XML through file data.xml 
+curl -s -k -X POST http://10.18.188.101/api/mo/aaaLogin.xml -d "@data.xml" -c COOKIE
  
-# Use Cookie to get Tenant List
-curl -k -X GET https://10.18.188.101/api/node/class/fvTenant.xml -b cookie
+# Use Cookie to perform a GET (eg, Tenant List)
+curl -k -X GET https://10.18.188.101/api/node/class/fvTenant.xml -b COOKIE
 
 
 #################################
