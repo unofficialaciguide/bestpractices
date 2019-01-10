@@ -20,10 +20,10 @@
 #HOST=1.2.3.4
 
 
-# Reference https://unofficialaciguide.com/2018/11/29/aci-best-practice-configurations/
 # Set these to YES if you want to configure (enable/disable).
 # Set to anything else to IGNORE (do nothing to) the setting.
-# This script will enable/disable all the YES settings.
+# This script will Activate or Deactivate all the YES settings.
+# Reference https://unofficialaciguide.com/2018/11/29/aci-best-practice-configurations/
 
 export MCP=YES
 export REL_ESC=YES
@@ -114,8 +114,8 @@ skip() {
 
 enable_mcp() {
 	if [ $MCP = "YES" ]; then 
-		echo "Enabling MCP setting."
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="enabled" annotation="" ctrl="pdu-per-vlan" descr="" dn="uni/infra/mcpInstP-default" initDelayTime="180" loopDetectMult="2" loopProtectAct="port-disable" name="default" nameAlias="" ownerKey="" ownerTag="" txFreq="2" txFreqMsec="0"/>' -b $COOKIEFILE
+		echo "Activating MisCabling Protocol"
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="enabled" annotation="" ctrl="pdu-per-vlan" descr="" dn="uni/infra/mcpInstP-default" initDelayTime="180" loopDetectMult="2" loopProtectAct="port-disable" name="default" nameAlias="" ownerKey="" ownerTag="" txFreq="2" txFreqMsec="0"/>' -b $COOKIEFILE  > /dev/null
 	else	
 		OPTION="MCP" 
 		skip 
@@ -125,8 +125,8 @@ enable_mcp() {
 
 disable_mcp() {
 	if [ $MCP = "YES" ]; then 
-		echo "Disabling MCP setting."
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="disabled"/>' -b $COOKIEFILE
+		echo "Deactivating MisCabling Protocol"
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="disabled"/>' -b $COOKIEFILE > /dev/null
 	else	
 		OPTION="MCP"
 		skip 
@@ -142,7 +142,7 @@ disable_mcp() {
 enable_rel_esc() {
 	if [ $REL_ESC = "YES" ]; then
 		echo "Activating \"Disable Remote Endpoint Learning\" and \"Enforce Subnet Check\""
-		curl $CURL_OPTS  https://$HOST/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="yes" unicastXrEpLearnDisable="yes"/>' -b $COOKIEFILE
+		curl $CURL_OPTS  https://$HOST/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="yes" unicastXrEpLearnDisable="yes"/>' -b $COOKIEFILE > /dev/null
 	else
 		OPTION="REL_ESC"
 		skip
@@ -153,7 +153,7 @@ enable_rel_esc() {
 disable_rel_esc() {
 	if [ $REL_ESC = "YES" ]; then
 		echo "Dectivating the \"Disable Remote Endpoint Learning\" and \"Enforce Subnet Check\""
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="no" unicastXrEpLearnDisable="no"/>' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="no" unicastXrEpLearnDisable="no"/>' -b $COOKIEFILE > /dev/null
 	else   
 		OPTION="REL_ESC"
 		skip
@@ -169,7 +169,7 @@ disable_rel_esc() {
 enable_eploop() {
 	if [[ $EP_LOOP_DETECTION = "YES" ]]; then
 		echo "Activating Endpoint Loop Protection"
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="enabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="enabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b $COOKIEFILE > /dev/null
 	else
 		OPTION="EP_LOOP_PROTECTION"
 		skip
@@ -178,8 +178,8 @@ enable_eploop() {
 
 disable_eploop() {
 	if [[ $EP_LOOP_DETECTION = "YES" ]]; then
-		echo "Disabling Loop Protection."
-		curl $CURL_OPTS -X POST https://$HOST/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="disabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b $COOKIEFILE
+		echo "Deactivating Endpoint Loop Protection."
+		curl $CURL_OPTS -X POST https://$HOST/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="disabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b $COOKIEFILE > /dev/null
 	else
 		OPTION="EP_LOOP_PROTECTION"
 		skip
@@ -194,7 +194,7 @@ disable_eploop() {
 enable_ipaging() {
 	if [[ $IP_AGING = "YES" ]]; then
 		echo "Activating IP Aging"
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="enabled"/>' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="enabled"/>' -b $COOKIEFILE > /dev/null
 	else
 		OPTION="IP_AGING"
 		skip
@@ -204,7 +204,7 @@ enable_ipaging() {
 disable_ipaging() {
 	if [[ $IP_AGING = "YES" ]]; then
 		echo "Deactivating IP Aging" 
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="disabled"/>' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="disabled"/>' -b $COOKIEFILE > /dev/null
 	else
 		OPTION="IP_AGING"
 		skip
@@ -218,7 +218,7 @@ disable_ipaging() {
 enable_red() {
         if [[ $ROGUE_EP_DETECTION = "YES" ]]; then
                 echo "Activating Rogue Endpoint Detection"
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="enabled" rogueEpDetectIntvl="30" rogueEpDetectMult="6"/>' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="enabled" rogueEpDetectIntvl="30" rogueEpDetectMult="6"/>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="ROGUE_EP_DETECTION"
                 skip
@@ -228,7 +228,7 @@ enable_red() {
 disable_red() {
         if [[ $ROGUE_EP_DETECTION = "YES" ]]; then
                 echo "Deactivating Rogue Endpoint Detection"
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="disabled"/>' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="disabled"/>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="ROGUE_EP_DETECTION"
                 skip
@@ -242,7 +242,7 @@ disable_red() {
 enable_coop() {
         if [[ $COOP_GROUP_POLICY = "YES" ]]; then
                 echo "Activating Strict COOP Group Policy"
-		curl $CURL_OPTS  https://$HOST/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="strict"/>' -b $COOKIEFILE
+		curl $CURL_OPTS  https://$HOST/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="strict"/>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="COOP_GROUP_POLICY"
                 skip
@@ -252,7 +252,7 @@ enable_coop() {
 disable_coop() {
         if [[ $COOP_GROUP_POLICY = "YES" ]]; then
                 echo "Deactivating Strict COOP Group Policy"
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="compatible"/>' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="compatible"/>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="COOP_GROUP_POLICY"
                 skip
@@ -266,7 +266,7 @@ disable_coop() {
 enable_bfd() {
         if [[ $BFD_FABRIC_INT = "YES" ]]; then
                 echo "Activating BFD for Fabric Facing Interfaces"
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="enabled"/>' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="enabled"/>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="BFD_FABRIC_INT"
                 skip
@@ -276,7 +276,7 @@ enable_bfd() {
 disable_bfd() {
         if [[ $BFD_FABRIC_INT = "YES" ]]; then
                 echo "Deactivating BFD for Fabric Facing Interfaces"
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="disabled"/>' -b $COOKIEFILE
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="disabled"/>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="BFD_FABRIC_INT"
                 skip
@@ -292,7 +292,7 @@ disable_bfd() {
 enable_cos() {
         if [[ $PRESERVE_COS == "YES" ]]; then
                 echo "Activating Preserve COS through the ACI Fabric."
-		curl $CURL_OPTS  https://$HOST/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl="dot1p-preserve"></qosInstPol>' -b $COOKIEFILE 
+		curl $CURL_OPTS  https://$HOST/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl="dot1p-preserve"></qosInstPol>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="PRESERVE_COS"
                 skip
@@ -302,7 +302,7 @@ enable_cos() {
 disable_cos() {
         if [[ $PRESERVE_COS == "YES" ]]; then
                 echo "Deactivating Preserve COS through the ACI Fabric."
-		curl $CURL_OPTS  https://$HOST/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl=""></qosInstPol>' -b $COOKIEFILE 
+		curl $CURL_OPTS  https://$HOST/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl=""></qosInstPol>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="PRESERVE_COS"
                 skip
@@ -315,7 +315,8 @@ disable_cos() {
 
 enable_porttrack() {
         if [[ $PORT_TRACKING == "YES" ]]; then 
-                echo "Activating Preserve COS through the ACI Fabric."
+                echo "Activating Port Tracking"
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/trackEqptFabP-default.xml -d '<infraPortTrackPol adminSt="on"/>' -b $COOKIEFILE > /dev/null
         else    
                 OPTION="PORT_TRACKING"
                 skip
@@ -324,7 +325,8 @@ enable_porttrack() {
 
 disable_porttrack() {
         if [[ $PORT_TRACKING == "YES" ]]; then
-                echo "Deactivating Preserve COS through the ACI Fabric."
+                echo "Deactivating Port Tracking"
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/trackEqptFabP-default.xml -d '<infraPortTrackPol adminSt="off"/>' -b $COOKIEFILE > /dev/null
         else
                 OPTION="PORT_TRACKING"
                 skip
