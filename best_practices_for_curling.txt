@@ -8,23 +8,23 @@ Ref: https://unofficialaciguide.com/2018/11/29/aci-best-practice-configurations/
 ## Login and GET Cookie
 
 # Using XML data directly 
-curl -s -k -X POST http://10.18.188.101/api/mo/aaaLogin.xml -d "<aaaUser name=admin pwd=password1/>" -c COOKIE
+curl -s -k -X POST http://HOSTNAME/api/mo/aaaLogin.xml -d "<aaaUser name=admin pwd=password1/>" -c COOKIE
 
 # Using XML through file data.xml 
-curl -s -k -X POST http://10.18.188.101/api/mo/aaaLogin.xml -d "@data.xml" -c COOKIE
+curl -s -k -X POST http://HOSTNAME/api/mo/aaaLogin.xml -d "@data.xml" -c COOKIE
  
-# Use Cookie to perform a GET (eg, Tenant List)
-curl -k -X GET https://10.18.188.101/api/node/class/fvTenant.xml -b COOKIE
+# Use authentication cookie to perform a GET (eg, Tenant List)
+curl -k -X GET https://HOSTNAME/api/node/class/fvTenant.xml -b COOKIE
 
 
 ##################################################
 ### Miscabling Protocol - MCP                  ###
 ##################################################
 # Enable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="enabled" annotation="" ctrl="pdu-per-vlan" descr="" dn="uni/infra/mcpInstP-default" initDelayTime="180" loopDetectMult="2" loopProtectAct="port-disable" name="default" nameAlias="" ownerKey="" ownerTag="" txFreq="2" txFreqMsec="0"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="enabled" annotation="" ctrl="pdu-per-vlan" descr="" dn="uni/infra/mcpInstP-default" initDelayTime="180" loopDetectMult="2" loopProtectAct="port-disable" name="default" nameAlias="" ownerKey="" ownerTag="" txFreq="2" txFreqMsec="0"/>' -b cookie
 
 # Disable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="disabled"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="disabled"/>' -b cookie
 
 
 ##################################################
@@ -32,10 +32,10 @@ curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/nod
 ### Enforce Subnet Check                       ###
 ##################################################
 # Enable 
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="yes" unicastXrEpLearnDisable="yes"/>' -b cookie 
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="yes" unicastXrEpLearnDisable="yes"/>' -b cookie 
 
 # Disable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="no" unicastXrEpLearnDisable="no"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="no" unicastXrEpLearnDisable="no"/>' -b cookie
 
 
 ##################################################
@@ -43,30 +43,30 @@ curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/nod
 ##################################################
 
 # Enabling EP loop protection
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="enabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="enabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b cookie
 
 
 # Disabling EP Loop Protection
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="disabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="disabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b cookie
 
 ##################################################
 ### IP Aging                                   ###
 ##################################################
 # Enable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="enabled"/>
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="enabled"/>
 ' -b cookie
 
 # Disabling IP Aging
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="disabled"/>
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="disabled"/>
 ' -b cookie
 
 ##################################################
 ### Rogue Endpoint Detection                   ###
 ##################################################
 
-curl -k -H "Content-Type: application/xml" -X POST  https://10.18.188.101/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="enabled" rogueEpDetectIntvl="30" rogueEpDetectMult="6"/>' -b COOKIE
+curl -k -H "Content-Type: application/xml" -X POST  https://HOSTNAME/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="enabled" rogueEpDetectIntvl="30" rogueEpDetectMult="6"/>' -b COOKIE
 
-curl -k -H "Content-Type: application/xml" -X POST  https://10.18.188.101/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="disabled"/>' -b COOKIE
+curl -k -H "Content-Type: application/xml" -X POST  https://HOSTNAME/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="disabled"/>' -b COOKIE
 
 #payload{"epControlP":{"attributes":{"dn":"uni/infra/epCtrlP-default","rogueEpDetectIntvl":"30","rogueEpDetectMult":"6"},"children":[]}}
 
@@ -77,20 +77,20 @@ curl -k -H "Content-Type: application/xml" -X POST  https://10.18.188.101/api/no
 ##################################################
 
 # Enable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/trackEqptFabP-default.xml -d '<infraPortTrackPol adminSt="on"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/trackEqptFabP-default.xml -d '<infraPortTrackPol adminSt="on"/>' -b cookie
 
 # Disable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/trackEqptFabP-default.xml -d '<infraPortTrackPol adminSt="off"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/trackEqptFabP-default.xml -d '<infraPortTrackPol adminSt="off"/>' -b cookie
 
 ##################################################
 ### Strict COOP Group Policy ###
 ##################################################
 
 # Enable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="strict"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="strict"/>' -b cookie
 
 # Disable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="compatible"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="compatible"/>' -b cookie
 
 
 
@@ -99,10 +99,10 @@ curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/nod
 ##################################################
 
 # Enable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="enabled"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="enabled"/>' -b cookie
 
 # Disable 
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="disabled"/>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="disabled"/>' -b cookie
 
 
 
@@ -111,7 +111,7 @@ curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/nod
 ##################################################
 
 # Enable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl="dot1p-preserve"></qosInstPol>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl="dot1p-preserve"></qosInstPol>' -b cookie
 
 # Disable
-curl -k -H "Content-Type: application/xml" -X POST https://10.18.188.101/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl=""></qosInstPol>' -b cookie
+curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl=""></qosInstPol>' -b cookie
