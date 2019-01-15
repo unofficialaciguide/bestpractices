@@ -5,6 +5,7 @@
 Ref: https://unofficialaciguide.com/2018/11/29/aci-best-practice-configurations/
 
 
+
 ## Login and GET Cookie
 
 # Using XML data directly 
@@ -20,6 +21,9 @@ curl -k -X GET https://HOSTNAME/api/node/class/fvTenant.xml -b COOKIE
 ##################################################
 ### Miscabling Protocol - MCP                  ###
 ##################################################
+
+GUI: Fabric > Access Policies > Global Policies > MCP Instance Policy Default
+
 # Enable
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="enabled" annotation="" ctrl="pdu-per-vlan" descr="" dn="uni/infra/mcpInstP-default" initDelayTime="180" loopDetectMult="2" loopProtectAct="port-disable" name="default" nameAlias="" ownerKey="" ownerTag="" txFreq="2" txFreqMsec="0"/>' -b cookie
 
@@ -31,6 +35,9 @@ curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/
 ### Disable Remote Endpoint Learning           ###
 ### Enforce Subnet Check                       ###
 ##################################################
+
+GUI: System > System Settings > Fabric Wide Setting
+
 # Enable 
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/settings.xml -d '<infraSetPol enforceSubnetCheck="yes" unicastXrEpLearnDisable="yes"/>' -b cookie 
 
@@ -42,6 +49,8 @@ curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/
 ### EP Loop Detection                          ###
 ##################################################
 
+GUI: Fabric > Access Policies > Global Policies > EP Loop Detection Policy
+
 # Enabling EP loop protection
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/epLoopProtectP-default.xml -d '<epLoopProtectP action="" adminSt="enabled" annotation="" loopDetectIntvl="60" loopDetectMult="4" />' -b cookie
 
@@ -52,6 +61,10 @@ curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/
 ##################################################
 ### IP Aging                                   ###
 ##################################################
+
+GUI: System > System Settings > Endpoint Control
+IP Aging is on the right.
+
 # Enable
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/ipAgingP-default.xml -d '<epIpAgingP adminSt="enabled"/>
 ' -b cookie
@@ -63,6 +76,9 @@ curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/
 ##################################################
 ### Rogue Endpoint Detection                   ###
 ##################################################
+
+GUI: System > System Settings > Endpoint Controls > Rogue EP Control
+
 
 curl -k -H "Content-Type: application/xml" -X POST  https://HOSTNAME/api/node/mo/uni/infra/epCtrlP-default.xml -d '<epControlP adminSt="enabled" rogueEpDetectIntvl="30" rogueEpDetectMult="6"/>' -b COOKIE
 
@@ -76,15 +92,20 @@ curl -k -H "Content-Type: application/xml" -X POST  https://HOSTNAME/api/node/mo
 ### Port Tracking                              ###
 ##################################################
 
+NOTE: This was not included in the original Unoffial ACI Blog link above.
+
 # Enable
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/trackEqptFabP-default.xml -d '<infraPortTrackPol adminSt="on"/>' -b cookie
 
 # Disable
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/trackEqptFabP-default.xml -d '<infraPortTrackPol adminSt="off"/>' -b cookie
 
+
 ##################################################
 ### Strict COOP Group Policy ###
 ##################################################
+
+GUI: System > System Settings > COOP Group
 
 # Enable
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/fabric/pol-default.xml -d '<coopPol type="strict"/>' -b cookie
@@ -98,6 +119,8 @@ curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/
 ### BFD for Fabric interfaces ###
 ##################################################
 
+GUI: Fabric > Fabric Policies > Policies > L3 Interface > default > BFD ISIS Policy Configuration
+
 # Enable
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/fabric/l3IfP-default.xml -d '<l3IfPol bfdIsis="enabled"/>' -b cookie
 
@@ -109,6 +132,8 @@ curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/
 ##################################################
 ### Preserve COS values through the Fabric  ###
 ##################################################
+
+GUI: Fabric > Access Policies > Policies > Global > QOS Class > Preserve COS
 
 # Enable
 curl -k -H "Content-Type: application/xml" -X POST https://HOSTNAME/api/node/mo/uni/infra/qosinst-default.xml -d '<qosInstPol name="default" ctrl="dot1p-preserve"></qosInstPol>' -b cookie

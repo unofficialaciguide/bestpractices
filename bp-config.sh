@@ -13,12 +13,19 @@
 # Configuration 
 ##############################################################################
 
-
+# AUTH INFO
 # Set your APIC username, password, and hostname/IP of controller
+
 #USER=bullwinkle
 #PASS=watch_me_pull_a_rabbit_out_of_my_hat!
 #HOST=1.2.3.4
+#HOST=mycontroller.mycompany.com
 
+USER=
+PASS=
+HOST=
+
+# Settings config
 
 # Set these to YES if you want to configure (enable/disable).
 # Set to anything else to IGNORE (do nothing to) the setting.
@@ -72,20 +79,15 @@ export DATE=$(date +%Y%m%d)
 # Functions
 ##############################################################################
 
-#() {
-#	if [[ $ = "YES" ]]; then
-#        	echo "Configuring! "
-#	else
-#      		echo "setting ignored. Change to YES to enable/disable setting."
-#	fi
-#}
-
+# The auth function passes the username/password to authenticate and set the cookie/token.
 
 auth() {
 	curl $CURL_OPTS http://$HOST/api/mo/aaaLogin.xml -d "<aaaUser name=$USER pwd=$PASS/>" -c $COOKIEFILE > /dev/null
 }
 
 
+
+# A simple usage function if the script is called without arguments.
 
 usage() {
 	echo " "
@@ -101,6 +103,9 @@ usage() {
 } 
 
 
+# A simple function to inform the user that a particular setting is not configured,
+# so the API curl command will not be executed.
+
 skip() {
 	echo "$OPTION setting not configured. To enable this action, change $OPTION to \"yes\"". 
 	echo "Skipping..."
@@ -108,9 +113,22 @@ skip() {
 }
 
 
+# Each function below does the following:
+#  - Tests the variable/setting to determine if it should run or not. 
+#  - If set to YES, run the following curl command. 
+#  - If not set to YES, then set the OPTION variable and run the "skip" function above. 
+#
+# For each ACI setting, there will be a separate enable/disable function. 
+# You could probably test for the positional parameter (enable/disable) and combine the two functions 
+# into one, but this is a simpler approach for a demonstration script.
+
+ 
 ##############################################################################
 ### Mis-cabling Protocol
 ##############################################################################
+
+# To verify this setting in the GUI, go to 
+# Fabric > Access Policies > Global Policies > MCP Instance Policy Default
 
 enable_mcp() {
 	if [ $MCP = "YES" ]; then 
@@ -139,6 +157,9 @@ disable_mcp() {
 ### Enforce Subnet Check
 ##############################################################################
 
+# To verify these settings in the GUI, go to:
+# System > System Settings > Fabric Wide Setting
+
 enable_rel_esc() {
 	if [ $REL_ESC = "YES" ]; then
 		echo "Activating \"Disable Remote Endpoint Learning\" and \"Enforce Subnet Check\""
@@ -166,6 +187,9 @@ disable_rel_esc() {
 ### Endpoint Loop Detection 
 ##############################################################################
 
+# To verify these settings, go to:
+# Fabric > Access Policies > Global Policies > EP Loop Detection Policy
+
 enable_eploop() {
 	if [[ $EP_LOOP_DETECTION = "YES" ]]; then
 		echo "Activating Endpoint Loop Protection"
@@ -190,6 +214,9 @@ disable_eploop() {
 ### Enable IP Aging
 ##############################################################################
 
+# To verify this setting, go to:
+# System > System Settings > Endpoint Control 
+# IP Aging is on the right.
 
 enable_ipaging() {
 	if [[ $IP_AGING = "YES" ]]; then
@@ -215,6 +242,9 @@ disable_ipaging() {
 ### Rogue Endpoint Detection
 ##############################################################################
 
+# To verify this setting, go to: 
+# System > System Settings > Endpoint Controls > Rogue EP Control
+
 enable_red() {
         if [[ $ROGUE_EP_DETECTION = "YES" ]]; then
                 echo "Activating Rogue Endpoint Detection"
@@ -239,6 +269,9 @@ disable_red() {
 ### Strict COOP Group Policy
 ##############################################################################
 
+# To verify this setting, go to:
+# System > System Settings > COOP Group
+
 enable_coop() {
         if [[ $COOP_GROUP_POLICY = "YES" ]]; then
                 echo "Activating Strict COOP Group Policy"
@@ -262,6 +295,9 @@ disable_coop() {
 ##############################################################################
 ### BFD For Fabric Facing Interfaces
 ##############################################################################
+
+# To verify this setting, go to:
+# Fabric > Fabric Policies > Policies > L3 Interface > default > BFD ISIS Policy Configuration
 
 enable_bfd() {
         if [[ $BFD_FABRIC_INT = "YES" ]]; then
@@ -288,6 +324,8 @@ disable_bfd() {
 ### Preserve COS Through ACI Fabric
 ##############################################################################
 
+# To verify this setting, go to:
+# Fabric > Access Policies > Policies > Global > QOS Class > Preserve COS
 
 enable_cos() {
         if [[ $PRESERVE_COS == "YES" ]]; then
