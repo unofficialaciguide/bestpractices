@@ -3,6 +3,11 @@
 ##############################################################################
 # This is a simple demo tool to illustrate interacting with
 # the APIC API using shell and curl.
+#
+# Reference:
+#  https://unofficialaciguide.com/2018/11/29/aci-best-practice-configurations/
+#  https://unofficialaciguide.com/2019/01/16/best-practices-for-curling/
+#
 ##############################################################################
 
 # Usage:
@@ -25,12 +30,12 @@ USER=
 PASS=
 HOST=
 
+
 # Settings config
 
 # Set these to YES if you want to configure (enable/disable).
 # Set to anything else to IGNORE (do nothing to) the setting.
 # This script will Activate or Deactivate all the YES settings.
-# Reference https://unofficialaciguide.com/2018/11/29/aci-best-practice-configurations/
 
 export MCP=YES
 export REL_ESC=YES
@@ -41,6 +46,12 @@ export COOP_GROUP_POLICY=YES
 export BFD_FABRIC_INT=YES
 export PRESERVE_COS=YES
 #export PORT_TRACKING=YES
+
+# COOKIE is the cookie file in the local/current working directiry. 
+# You can change COOKIE to a path/file if the current directory is not writable.
+
+COOKIEFILE="COOKIE"
+#COOKIEFILE="/tmp/cookie-file"
 
 
 # CURL options
@@ -55,12 +66,6 @@ export PRESERVE_COS=YES
 
 CURL_OPTS='-s -k -H "Content-Type: application/xml" -X POST'
 
-
-# COOKIE is the cookie file in the local/current working directiry. 
-# You can change COOKIE to a path/file if the current directory is not writable.
-
-COOKIEFILE="COOKIE"
-#COOKIEFILE="/tmp/cookie-file"
 
 
 # STOP! There is no more configuration to edit.
@@ -95,7 +100,7 @@ usage() {
 	echo "at http://unofficialaciguide.com/2018/11/29/aci-best-practice-configurations/"
 	echo " "
 	echo "For the full list of options enabled/disabled or to read a walk-thru of this script, "
-	echo "please see [ insert new link ]. "
+	echo "please see: https://unofficialaciguide.com/2019/01/16/best-practices-for-curling/. "
 	echo " "
 	echo "Usage:"
 	echo "bp-config.sh enable"
@@ -104,7 +109,7 @@ usage() {
 
 
 # A simple function to inform the user that a particular setting is not configured,
-# so the API curl command will not be executed.
+# when the API curl command will not be executed.
 
 skip() {
 	echo "$OPTION setting not configured. To enable this action, change $OPTION to \"yes\"". 
