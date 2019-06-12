@@ -44,7 +44,7 @@ export IP_AGING=YES
 export ROGUE_EP_DETECTION=YES
 export COOP_GROUP_POLICY=YES
 export BFD_FABRIC_INT=YES
-export PRESERVE_COS=YES
+#export PRESERVE_COS=YES
 #export PORT_TRACKING=YES
 
 # COOKIE is the cookie file in the local/current working directiry. 
