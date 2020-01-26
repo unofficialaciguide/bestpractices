@@ -87,7 +87,7 @@ export DATE=$(date +%Y%m%d)
 # The auth function passes the username/password to authenticate and set the cookie/token.
 
 auth() {
-	curl $CURL_OPTS http://$HOST/api/mo/aaaLogin.xml -d "<aaaUser name=$USER pwd=$PASS/>" -c $COOKIEFILE > /dev/null
+	curl $CURL_OPTS https://$HOST/api/mo/aaaLogin.xml -d "<aaaUser name=$USER pwd=$PASS/>" -c $COOKIEFILE > /dev/null
 }
 
 
