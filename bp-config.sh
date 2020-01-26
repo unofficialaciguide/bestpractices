@@ -138,7 +138,7 @@ skip() {
 enable_mcp() {
 	if [ $MCP = "YES" ]; then 
 		echo "Activating MisCabling Protocol"
-		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="enabled" annotation="" ctrl="pdu-per-vlan" descr="" dn="uni/infra/mcpInstP-default" initDelayTime="180" loopDetectMult="2" loopProtectAct="port-disable" name="default" nameAlias="" ownerKey="" ownerTag="" txFreq="2" txFreqMsec="0"/>' -b $COOKIEFILE  > /dev/null
+		curl $CURL_OPTS https://$HOST/api/node/mo/uni/infra/mcpInstP-default.xml -d '<mcpInstPol adminSt="enabled" key="C1sc0123" annotation="" ctrl="pdu-per-vlan" descr="" dn="uni/infra/mcpInstP-default" initDelayTime="180" loopDetectMult="2" loopProtectAct="port-disable" name="default" nameAlias="" ownerKey="" ownerTag="" txFreq="2" txFreqMsec="0"/>' -b $COOKIEFILE  > /dev/null
 	else	
 		OPTION="MCP" 
 		skip 
